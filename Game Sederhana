@@ -1,0 +1,55 @@
+import random
+import ipywidgets as widgets
+from IPython.display import display, clear_output, HTML
+
+# Pilihan emoji dan nama
+benda_emoji = {
+    "🐯": "Harimau",
+    "🦁": "Singa",
+    "🐵": "Monyet",
+    "🐶": "Anjing",
+    "😺": "Kucing"
+}
+
+# Pilih dua emoji acak
+emoji1, emoji2 = random.sample(list(benda_emoji.keys()), 2)
+jumlah1 = random.randint(1, 9)
+jumlah2 = random.randint(1, 9)
+jawaban_benar = jumlah1 + jumlah2
+
+# Tampilkan soal dalam HTML
+def tampilkan_soal():
+    soal_html = f"""
+    <div style="font-size: 40px;">
+        {" ".join([emoji1]*jumlah1)} + {" ".join([emoji2]*jumlah2)} = ❓
+    </div>
+    """
+    display(HTML("<b>Berapa total jumlah hewan yang ditampilkan?</b>"))
+    display(HTML(soal_html))
+
+# Input & tombol
+input_jawaban = widgets.BoundedIntText(
+    value=0,
+    min=0,
+    max=20,
+    description='Jawaban:',
+    style={'description_width': 'initial'}
+)
+button = widgets.Button(description="Cek Jawaban")
+
+# Fungsi cek
+def cek_jawaban(b):
+    clear_output()
+    tampilkan_soal()
+    display(input_jawaban, button)
+    if input_jawaban.value == jawaban_benar:
+        print(f"✅ Benar! Ada {jumlah1} {benda_emoji[emoji1]} + {jumlah2} {benda_emoji[emoji2]} = {jawaban_benar}")
+    else:
+        print("❌ Salah. Coba hitung lagi ya!")
+
+# Hubungkan tombol
+button.on_click(cek_jawaban)
+
+# Tampilkan UI
+tampilkan_soal()
+display(input_jawaban, button)
